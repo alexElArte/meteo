@@ -70,8 +70,8 @@ void loop() {
           client.readStringUntil('>');
           if (detect_temp == false) detect_temp = true;
           else {
-            temperature = (client.read() - 0x30) * 10;
-            temperature += client.read() - 0x30;
+            temp = (client.read() - 0x30) * 10;
+            temp += client.read() - 0x30;
             while (client.read() != '\n');
             weather = client.readStringUntil('<');
             break;
@@ -104,12 +104,12 @@ void loop() {
     delay(10);
     weather_t = client.readStringUntil('\n');
     client.readStringUntil(' ');
-    temperature_max = (client.read() - 0x30) * 10;
-    temperature_max += client.read() - 0x30;
+    temp_max = (client.read() - 0x30) * 10;
+    temp_max += client.read() - 0x30;
     client.readStringUntil(':');
     client.read();
-    temperature_min = (client.read() - 0x30) * 10;
-    temperature_min += client.read() - 0x30;
+    temp_min = (client.read() - 0x30) * 10;
+    temp_min += client.read() - 0x30;
     client.stop();
   } else {
     Serial.println("Connection failed");
@@ -139,14 +139,14 @@ void update_weather(){
   Serial.println("+--------------+--------------+");
   Serial.println("|    Today     |   Tomorrow   |");
   Serial.print("|     ");
-  if(temperature < 10) Serial.write(' ');
-  Serial.print(temperature);
+  if(temp < 10) Serial.write(' ');
+  Serial.print(temp);
   Serial.print("°C     |  ");
-  if(temperature_min < 10) Serial.write(' ');
-  Serial.print(temperature_min);
+  if(temp_min < 10) Serial.write(' ');
+  Serial.print(temp_min);
   Serial.print("°C/");
-  if(temperature_max < 10) Serial.write(' ');
-  Serial.print(temperature_max);
+  if(temp_max < 10) Serial.write(' ');
+  Serial.print(temp_max);
   Serial.println("°C   |");
   Serial.write('|');
   count = (14 - weather.length())/2;
